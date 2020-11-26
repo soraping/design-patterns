@@ -30,3 +30,4 @@ console.timeEnd('fisrt')
 console.time('secend')
 console.log(proxyMult(1,2,3,4))
 console.timeEnd('secend')
+

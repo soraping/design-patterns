@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='users'>
+        <div>
+            name: <span></span>
+        </div>
+        <div>
+            avatar_url: <img src="" alt="" srcset="">
+        </div>
+    </div>
+
+    <div>
+        <button onclick="next_click()">下一个</button>
+        <button onclick="prev_click()">上一个</button>
+    </div>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+
+        // 请求部分
+        let github_base_url = 'https://api.github.com/users/'
+        let query_data = function(name, cb){
+            $.ajax({
+                url: github_base_url + name,
+                method: 'get',
+                success: function(res){
+                    cb(res)
+                }
+            })
+        }
+
+        // 设置部分
+        let modify_user = function(res){
+            $('#users').children().first().children().text(res['name'])
+            $('#users').children().last().children().attr('src', res['avatar_url'])
+        }
+
+        // 设置代理
+        let proxyCacheResult = (function(){
+            let cache_result = {}
+            return function(name, modify_user_func){
+                let cache_key = name
+                if(cache_key in cache_result){
+                    return modify_user_func(cache_result[cache_key])
+                }
+                query_data(name, function(res){
+                    cache_result[name] = res
+                    modify_user_func(res)
+                })
+            }
+        })()
+
+        let next_click = function(){
+            // proxyCacheResult('ruanyf', modify_user)
+            query_data('ruanyf', modify_user)
+        }
+
+        let prev_click = function(){
+            // proxyCacheResult('facebook', modify_user)
+            query_data('facebook', modify_user  )
+        }
+    </script>
+</body>
+</html>
