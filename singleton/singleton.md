@@ -1,4 +1,4 @@
-### 单例模式
+### 单例模式(`Singleton`)
 
 - `typescript` 类实现的两种模式
 
