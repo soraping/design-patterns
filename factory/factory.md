@@ -76,6 +76,107 @@ console.log(pythonBook.getName(), pythonBook.getDesc())
 
 ### 工厂方法模式(`Factory Method`)
 
+该模式本意是将实际创建对象工作推迟到子类，如此，首先创建一个核心的抽象类，让子类实现这个抽象类。
 
+```javascript
+interface IBook {
+    getName(): string
+    pageSize: number
+    getDesc(): string
+}
+
+/**
+ * 抽象产品
+ */
+abstract class AbcBook implements IBook {
+    constructor(protected name: string, protected size: number){
+
+    }
+    getName(){
+        return this.name
+    }
+    get pageSize(){
+        return this.size
+    }
+    abstract getDesc(): string
+}
+
+/**
+ * 具体产品
+ */
+class GoBook extends AbcBook {
+    getDesc(){
+        return '这是 go 的介绍'
+    }
+}
+
+/**
+ * 具体产品
+ */
+class CssBook extends AbcBook {
+    getDesc(){
+        return '这是 css 的介绍'
+    }
+}
+
+/**
+ * 抽象工厂
+ */
+abstract class AbcFactory {
+    abstract createBook(): IBook
+}
+
+/**
+ * 具体工厂
+ */
+class GoFactory extends AbcFactory {
+    createBook(){
+        return new GoBook("go", 200)
+    }
+}
+class CssFactory extends AbcFactory {
+    createBook(){
+        return new GoBook("css", 400)
+    }
+}
+```
+
+将工厂拆分多块，各自管各自的产线，将各自的产品实现放在各自的工厂内部，如果要新增新产品时，抽象类不需要修改，只要实现两个抽象类即可
+
+使用工厂：
+
+```javascript
+let cssBook = new GoFactory().createBook()
+console.log(cssBook.getDesc())
+```
+
+使用时，只要实例化需要的工厂类就可以了，但这要做并不能简化用户行为，且需要用户自己手动 `new` 一个类，并不能提现设计模式所带来的便利，所以，可以用下面的优化，将 `new` 封装在内部
+
+```javascript
+/**
+ * 配置字典
+ */
+let bookTypes = {
+    css: CssFactory,
+    go: GoFactory
+}
+
+/**
+ * 真实的提供工厂，简化行为
+ */
+class FactoryMethod {
+    public static create<T extends AbcFactory>(c: { new() : T }): T{
+        return new c()
+    }
+}
+
+let cssBook = FactoryMethod.create(bookTypes['css']).createBook()
+console.log(cssBook.getDesc())
+```
+
+将 `new` 封装在工厂内部有很多种方法，这里新增了一个提供给外部调用的工厂函数，类似简单工厂，主要是为了简化行为。
+
+**创建多类实例，简单工厂就不适用了，而工厂方法却能适用，可以轻松的创建多个类的实例，用户不必关心创建该对象的具体类，只需要调用工厂方法即可。**
 
 ### 抽象工厂模式(`Abstract Factory`)
+

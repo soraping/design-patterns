@@ -3,7 +3,7 @@ interface IBook1 {
 }
 
 class JavaBook implements IBook1 {
-    constructor(private size: number){}
+    constructor(private size: number = 100){}
 
     get pageSize(){
         return this.size
@@ -16,7 +16,7 @@ class JavaBook implements IBook1 {
 }
 
 class PythonBook implements IBook1 {
-    constructor(private size: number){}
+    constructor(private size: number = 200){}
 
     get pageSize(){
         return this.size
@@ -51,10 +51,10 @@ console.log(pythonBook.getDesc())
  * 利用反射，直接将类当参数传入
  */
 class BookSimpleFactory1 {
-    public static createBook<T extends IBook1>(c : { new () : T }): T{
-        return new c()
+    public static createBook<T extends number, U extends IBook1>(c : { new (args: T) : U }, params: T): U{
+        return new c(params)
     }
 }
 
-let javaBook = BookSimpleFactory1.createBook(JavaBook)
+let javaBook = BookSimpleFactory1.createBook(JavaBook, 300)
 console.log(javaBook.getContent())

@@ -25,7 +25,7 @@ abstract class AbcBook implements IBook {
  */
 class GoBook extends AbcBook {
     getDesc(){
-        return '这是 python 的介绍'
+        return '这是 go 的介绍'
     }
 }
 
@@ -42,19 +42,42 @@ class CssBook extends AbcBook {
  * 抽象工厂
  */
 abstract class AbcFactory {
-    abstract create(): IBook
+    abstract createBook(): IBook
 }
 
 /**
  * 具体工厂
  */
 class GoFactory extends AbcFactory {
-    create(){
+    createBook(){
         return new GoBook("go", 200)
     }
 }
 class CssFactory extends AbcFactory {
-    create(){
+    createBook(){
         return new GoBook("css", 400)
     }
 }
+
+/**
+ * 配置字典
+ */
+let bookTypes = {
+    css: CssFactory,
+    go: GoFactory
+}
+
+/**
+ * 真实的提供工厂，简化行为
+ */
+class FactoryMethod {
+    public static create<T extends AbcFactory>(c: { new() : T }): T{
+        return new c()
+    }
+}
+
+
+
+let cssBook = FactoryMethod.create(bookTypes['css']).createBook()
+console.log(cssBook.getDesc())
+
