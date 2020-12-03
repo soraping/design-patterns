@@ -180,3 +180,114 @@ console.log(cssBook.getDesc())
 
 ### 抽象工厂模式(`Abstract Factory`)
 
+同样是书的例子，书有纯图片的书，也有小说类的纯文字书，而且书有薄有厚。
+
+创建一个书本抽象类
+
+```javascript
+/**
+ * 书的抽象类
+ */
+abstract class ABCImageBook {
+    abstract getImageDesc(): string
+}
+abstract class ABCTextBook {
+    abstract getTextDesc(): string
+}
+
+/**
+ * 书的实体类薄书
+ */
+class ImageBook1 extends ABCImageBook {
+    getImageDesc(){
+        return 'image book 1'
+    }
+}
+
+class TextBook1 extends ABCTextBook {
+    getTextDesc(){
+        return 'text book 1'
+    }
+}
+
+/**
+ * 书的实体类厚书
+ */
+class ImageBook2 extends ABCImageBook {
+    getImageDesc(){
+        return 'image book 2'
+    }
+}
+class TextBook2 extends ABCTextBook {
+    getTextDesc(){
+        return 'text book 2'
+    }
+}
+```
+
+书的刊印一般都是有出版社负责的，有的出版社拥有自己的风格，这里就实现两个出版社，一个专门出版薄书，一个专门出版厚书。
+创建一个出版社的抽象工厂，每个出版社都能刊印图书和文字书，所有会有两个抽象方法：
+
+```javascript
+/**
+ * 抽象工厂
+ * 出版社
+ */
+abstract class ABCBookFactory {
+    
+    /**
+     * 图画书
+     */
+    abstract createImageBook(): ABCImageBook
+
+    /**
+     * 文字书
+     */
+    abstract createTextBook(): ABCTextBook
+}
+```
+
+两个出版社：
+
+```javascript
+/**
+ * 实现两个出版社
+ * 第一个出版社出书
+ * 专门出薄书
+ */
+class BookFactory1 extends ABCBookFactory {
+    createImageBook(){
+        return new ImageBook1()
+    }
+    createTextBook(){
+        return new TextBook1()
+    }
+}
+
+/**
+ * 第二个出版社
+ * 专门出厚书
+ */
+class BookFactory2 extends ABCBookFactory {
+    createImageBook(){
+        return new ImageBook2()
+    }
+    createTextBook(){
+        return new TextBook2()
+    }
+}
+```
+
+如果想要薄书，就可以直接实例化对应的工厂就可以了：
+
+```javascript
+let bookFactory1 = new BookFactory1()
+
+let image_book1 = bookFactory1.createImageBook()
+console.log(image_book1.getImageDesc())
+
+let text_book1 = bookFactory1.createTextBook()
+console.log(text_book1.getTextDesc())
+```
+
+抽象工厂函数，主要针对一个系列，例如一个出版社，擅长刊印薄的书，而这书有图书，也有文字书。

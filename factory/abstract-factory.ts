@@ -1,6 +1,45 @@
 /**
+ * 书的抽象类
+ */
+abstract class ABCImageBook {
+    abstract getImageDesc(): string
+}
+abstract class ABCTextBook {
+    abstract getTextDesc(): string
+}
+
+/**
+ * 书的实体类薄书
+ */
+class ImageBook1 extends ABCImageBook {
+    getImageDesc(){
+        return 'image book 薄书'
+    }
+}
+
+class TextBook1 extends ABCTextBook {
+    getTextDesc(){
+        return 'text book 薄书'
+    }
+}
+
+/**
+ * 书的实体类厚书
+ */
+class ImageBook2 extends ABCImageBook {
+    getImageDesc(){
+        return 'image book 厚书'
+    }
+}
+class TextBook2 extends ABCTextBook {
+    getTextDesc(){
+        return 'text book 厚书'
+    }
+}
+
+/**
  * 抽象工厂
- * 印刷厂
+ * 出版社
  */
 abstract class ABCBookFactory {
     
@@ -17,52 +56,36 @@ abstract class ABCBookFactory {
 
 /**
  * 实现两个出版社
+ * 第一个出版社出书
+ * 专门出薄书
  */
 class BookFactory1 extends ABCBookFactory {
     createImageBook(){
-        return 
+        return new ImageBook1()
     }
-    createTextBook(){}
+    createTextBook(){
+        return new TextBook1()
+    }
 }
 
+/**
+ * 第二个出版社
+ * 专门出厚书
+ */
 class BookFactory2 extends ABCBookFactory {
-    createImageBook(){}
-    createTextBook(){}
-}
-
-/**
- * 书的抽象类
- */
-abstract class ABCImageBook {
-    abstract getImageDesc(): string
-}
-abstract class ABCTextBook {
-    abstract getTextDesc(): string
-}
-
-/**
- * 书的实体类
- */
-class ImageBook1 extends ABCImageBook {
-    getImageDesc(){
-        return 'image book 1'
+    createImageBook(){
+        return new ImageBook2()
+    }
+    createTextBook(){
+        return new TextBook2()
     }
 }
 
-class ImageBook2 extends ABCImageBook {
-    getImageDesc(){
-        return 'image book 2'
-    }
-}
 
-class TextBook1 extends ABCTextBook {
-    getTextDesc(){
-        return 'text book 1'
-    }
-}
+let bookFactory1 = new BookFactory1()
 
-class TextBook2 extends ABCTextBook {
-    getTextDesc(){
-        return 'text book 2'
-    }
-}
+let image_book1 = bookFactory1.createImageBook()
+console.log(image_book1.getImageDesc())
+
+let text_book1 = bookFactory1.createTextBook()
+console.log(text_book1.getTextDesc())
