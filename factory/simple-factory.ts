@@ -51,7 +51,7 @@ console.log(pythonBook.getDesc())
  * 利用反射，直接将类当参数传入
  */
 class BookSimpleFactory1 {
-    public static createBook<T extends number, U extends IBook1>(c : { new (args: T) : U }, params: T): U{
+    public static createBook<U extends IBook1, T extends number>(c : { new (args: T) : U }, params: T): U{
         return new c(params)
     }
 }

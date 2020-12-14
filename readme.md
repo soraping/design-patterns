@@ -7,3 +7,5 @@
 ### 结构型模式
 
 - [代理-proxy](https://github.com/soraping/design-patterns/blob/master/proxy/proxy.md)
+
+- [适配器-adapter](https://github.com/soraping/design-patterns/blob/master/adapter/adapter.md)
