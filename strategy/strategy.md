@@ -37,5 +37,79 @@ console.log(calculateBonus('A', 1000))
 
 也可以将具体的策略放在函数内部，这样外部 `context` 是不需要了解具体实现的。
 
+> 一等函数对象
+
+函数作为一等对象，策略模式是隐形的。`strategy` 就是值为函数的变量。
+
+```javascript
+/**
+ * 策略变量就是一个函数
+ * @param salary 
+ */
+let S = function(salary){
+    return salary * 4 
+}
+
+let A = function(salary){
+    return salary * 3
+}
+
+let B = function(salary){
+    return salary * 2
+}
+
+let calculateBonus2 = function(func, salary){
+    return func(salary)
+}
+```
+
+这样隐形的策略模式，一个策略就是一个函数，并将这个函数赋值给一个变量。
+
 #### 表单验证的案例：
 
+```javascript
+/**
+ * 表单校验案例
+ */
+let InputStrategy = function(){
+
+    let strategy = {
+        notNull: function(value){
+            return /\s+/.test(value) ? '请输入内容':''
+        },
+        number: function(value){
+            return /^[0-9]+(\.[0-9]+)?$/.test(value) ? '' : '请输入数字'
+        }
+    }
+
+    return {
+        /**
+         * 校验表单
+         * @param type 
+         * @param value 
+         */
+        check: function(type, value){
+            value = value.replace(/^\s+|\s+$/g, '')
+            return strategy[type] ? strategy[type](value) : "没有该类型的检测方法"
+        },
+
+        /**
+         * 添加策略模式
+         * @param type 
+         * @param fn 
+         */
+        addStrategy: function(type, fn){
+            strategy[type] = fn
+        }
+    }
+
+}
+```
+
+这个案例中，新增了一个策略的拓展接口，可以通过该接口添加策略，而不是修改内部代码。
+
+```javascript
+InputStrategy().addStrategy('nickname', function(value){
+    return /^[a-zA-Z]\w{3,7}$/.test(value) ? '' : '请输入4-8位昵称'
+})
+```
