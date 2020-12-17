@@ -13,3 +13,5 @@
 ### 行为型模式
 
 - [策略-strategy](https://github.com/soraping/design-patterns/blob/master/strategy/strategy.md)
+
+- [观察者-observer](https://github.com/soraping/design-patterns/blob/master/observer/observer.md)

@@ -41,6 +41,7 @@ abstract class ABCObserver implements IObserver {
 }
 
 class Observer extends ABCObserver {
+    private name: string = 'zhangsan'
     register<T>(type: string, fn: ICallback<T>){
         if(this._messagePool[type]){
             this._messagePool[type].push(fn)
